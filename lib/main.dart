@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import './constants.dart';
+import './screens/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,14 +14,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Uday',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Uday"),
+        primaryColor: kPrimaryColor,
+        accentColor: kAccentColor,
+        textTheme: GoogleFonts.quicksandTextTheme(
+          Theme.of(context).textTheme,
         ),
       ),
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
     );
   }
 }
