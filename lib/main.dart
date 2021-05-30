@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import './screens/triage.dart';
 import './constants.dart';
 import './screens/home.dart';
 
@@ -21,7 +22,12 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: SafeArea(
+        child: HomePage(),
+      ),
+      routes: {
+        TriageScreen.routeName: (ctx) => TriageScreen(),
+      },
     );
   }
 }
