@@ -6,11 +6,11 @@ class CustomSlider extends StatefulWidget {
   final int min;
   final int initialVal;
   final bool Function(int) onChanged;
-  CustomSlider(
-    this.max,
-    this.min,
-    this.onChanged, {
-    this.initialVal = 0,
+  CustomSlider({
+    required this.max,
+    required this.min,
+    required this.onChanged,
+    required this.initialVal,
   });
 
   @override
@@ -24,6 +24,7 @@ class _CustomSliderState extends State<CustomSlider> {
   @override
   void initState() {
     // TODO: implement initState
+    super.didChangeDependencies();
     if (isInit) {
       _sliderVal = widget.initialVal.toDouble();
       isInit = false;
@@ -45,27 +46,27 @@ class _CustomSliderState extends State<CustomSlider> {
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: Colors.blueGrey[300],
               inactiveTrackColor: Colors.blueGrey[200],
-              thumbColor: kAccentColor,
+              thumbColor: kPrimaryColor,
               thumbShape: RoundSliderThumbShape(
                 enabledThumbRadius: 15.0,
                 disabledThumbRadius: 15.0,
               ),
-              trackHeight: 10.0,
-              overlayColor: kPrimaryColor.withAlpha(32),
+              trackHeight: 13.0,
+              overlayColor: kAccentColor.withAlpha(32),
               inactiveTickMarkColor: Colors.blueGrey[300],
-              valueIndicatorColor: kAccentColor.withOpacity(0.7),
+              valueIndicatorColor: kPrimaryColor.withOpacity(0.7),
             ),
             child: Slider(
               min: widget.min.toDouble(),
               max: widget.max.toDouble(),
-              divisions: widget.max.toInt(),
+              divisions: widget.max.toInt() - widget.min.toInt(),
               value: _sliderVal,
-              label: _sliderVal.ceil().toString(),
+              label: _sliderVal.floor().toString(),
               onChanged: (double v) {
                 if (widget.onChanged(v.toInt())) {
                   setState(() {
                     _sliderVal = v;
-                    print(_sliderVal);
+                    // print(_sliderVal);
                   });
                 }
               },

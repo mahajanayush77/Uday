@@ -50,20 +50,29 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     EmojiButton(
-                        'Anxious',
-                        '😰',
-                        () => Navigator.pushNamed(
-                            context, TriageScreen.routeName)),
+                      'Anxious',
+                      '😰',
+                      () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TriageScreen())),
+                    ),
                     EmojiButton(
-                        'Stressed',
-                        '😫',
-                        () => Navigator.pushNamed(
-                            context, TriageScreen.routeName)),
+                      'Stressed',
+                      '😫',
+                      () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TriageScreen())),
+                    ),
                     EmojiButton(
-                        'Depressed',
-                        '😞',
-                        () => Navigator.pushNamed(
-                            context, TriageScreen.routeName)),
+                      'Depressed',
+                      '😞',
+                      () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TriageScreen())),
+                    ),
                   ],
                 ),
               ),

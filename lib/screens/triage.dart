@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:uday/widgets/CustomSlider.dart';
 import '../constants.dart';
 
@@ -12,14 +13,13 @@ class TriageScreen extends StatefulWidget {
 class _TriageScreenState extends State<TriageScreen> {
   int _selectedLevel = 1;
   int _idealLevel = 0;
-
-  Widget _buildQuestion(
-    String ques,
-    int min,
-    int max,
-    int initialVal,
-    bool Function(int) onChanged,
-  ) {
+  Widget _buildQuestion({
+    required String ques,
+    required int min,
+    required int max,
+    required int initialVal,
+    required bool Function(int) onChanged,
+  }) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,10 +29,10 @@ class _TriageScreenState extends State<TriageScreen> {
           style: kHeadingStyle,
         ),
         CustomSlider(
-          max,
-          min,
-          onChanged,
-          initialVal: 0,
+          max: max,
+          min: min,
+          onChanged: onChanged,
+          initialVal: initialVal,
         ),
       ],
     );
@@ -43,46 +43,98 @@ class _TriageScreenState extends State<TriageScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: kPrimaryColor,
+          backgroundColor: kAccentColor,
           elevation: 10.0,
+          title: Text('Triage'),
+          centerTitle: true,
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20.0,
-            vertical: 20.0,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildQuestion(
-                'How anxious are you ?',
-                1,
-                10,
-                1,
-                (val) {
-                  setState(() {
-                    _selectedLevel = val;
-                  });
-                  return true;
-                },
+        body: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 40.0,
               ),
-              SizedBox(
-                height: 40.0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildQuestion(
+                    ques: 'How anxious are you ?',
+                    min: 1,
+                    max: 10,
+                    initialVal: 1,
+                    onChanged: (val) {
+                      if (_idealLevel > val) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text('Oops!'),
+                            content: Text(
+                              'Your ideal anxiety level cannot be more than your actual anxiety level.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(kAccentColor),
+                                  textStyle:
+                                      MaterialStateProperty.all(kBodyStyle),
+                                  foregroundColor:
+                                      MaterialStateProperty.all(Colors.white),
+                                ),
+                                child: Text('OK'),
+                              )
+                            ],
+                          ),
+                        );
+                        return false;
+                      } else {
+                        setState(() {
+                          _selectedLevel = val;
+                        });
+                        return true;
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 35.0,
+                  ),
+                  _buildQuestion(
+                    ques: 'Select an ideal anxiety level',
+                    min: 0,
+                    max: _selectedLevel,
+                    initialVal: 0,
+                    onChanged: (val) {
+                      setState(() {
+                        _idealLevel = val;
+                      });
+                      return true;
+                    },
+                  ),
+                ],
               ),
-              _buildQuestion(
-                'Select an ideal anxiety level',
-                0,
-                _selectedLevel,
-                1,
-                (val) {
-                  setState(() {
-                    _idealLevel = val;
-                  });
-                  return true;
-                },
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                // padding: EdgeInsets.symmetric(vertical: 10.0),
+                width: double.infinity,
+                height: 50.0,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    'NEXT',
+                    style: kSubheadingStyle,
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(kAccentColor)),
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
