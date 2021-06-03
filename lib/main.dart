@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import './screens/triage.dart';
 import './constants.dart';
 import './screens/home.dart';
+import './screens/challenge.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         TriageScreen.routeName: (ctx) => TriageScreen(),
+        ChallengeScreen.routeName: (ctx) => ChallengeScreen(),
       },
     );
   }

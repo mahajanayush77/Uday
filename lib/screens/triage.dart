@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:uday/widgets/CustomSlider.dart';
+import 'package:uday/widgets/bottomButton.dart';
+import '../widgets/CustomSlider.dart';
 import '../constants.dart';
+import 'package:uday/screens/challenge.dart';
 
 class TriageScreen extends StatefulWidget {
   static const routeName = '/triage';
@@ -117,22 +119,10 @@ class _TriageScreenState extends State<TriageScreen> {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                // padding: EdgeInsets.symmetric(vertical: 10.0),
-                width: double.infinity,
-                height: 50.0,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    'NEXT',
-                    style: kSubheadingStyle,
-                  ),
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(kAccentColor)),
-                ),
-              ),
+            BottomButton(
+              onPressed: () =>
+                  Navigator.pushNamed(context, ChallengeScreen.routeName),
+              title: 'NEXT',
             ),
           ],
         ),

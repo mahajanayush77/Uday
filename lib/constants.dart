@@ -16,7 +16,9 @@ const kHeadingStyle = TextStyle(
   fontSize: 22.0,
   letterSpacing: 1.2,
 );
+
 const kBodyStyle = TextStyle(
+  fontWeight: FontWeight.w500,
   fontSize: 14.0,
   letterSpacing: 1.2,
 );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:uday/screens/triage.dart';
+import '../screens/triage.dart';
 import '/constants.dart';
 import '../widgets/emoji.dart';
 
