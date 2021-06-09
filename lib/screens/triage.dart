@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:uday/widgets/bottomButton.dart';
+import '../models/problem.dart';
+import '../widgets/bottomButton.dart';
 import '../widgets/CustomSlider.dart';
 import '../constants.dart';
-import 'package:uday/screens/challenge.dart';
+import '../screens/challenge.dart';
 
 class TriageScreen extends StatefulWidget {
   static const routeName = '/triage';
@@ -13,6 +14,18 @@ class TriageScreen extends StatefulWidget {
 }
 
 class _TriageScreenState extends State<TriageScreen> {
+  var _isInit = true;
+  late ProblemDetails _problem; // will be initialised later
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isInit) {
+      final problemType = ModalRoute.of(context)!.settings.arguments as Problem;
+      _problem = getProblemDetails(problemType);
+      _isInit = false;
+    }
+  }
+
   int _selectedLevel = 1;
   int _idealLevel = 0;
   Widget _buildQuestion({
@@ -63,7 +76,7 @@ class _TriageScreenState extends State<TriageScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _buildQuestion(
-                    ques: 'How anxious are you ?',
+                    ques: 'How ${_problem.adjective} are you ?',
                     min: 1,
                     max: 10,
                     initialVal: 1,
@@ -74,7 +87,7 @@ class _TriageScreenState extends State<TriageScreen> {
                           builder: (BuildContext context) => AlertDialog(
                             title: Text('Oops!'),
                             content: Text(
-                              'Your ideal anxiety level cannot be more than your actual anxiety level.',
+                              'Your ideal ${_problem.noun.toLowerCase()} level cannot be more than your actual ${_problem.noun.toLowerCase()} level.',
                             ),
                             actions: [
                               TextButton(
@@ -105,7 +118,7 @@ class _TriageScreenState extends State<TriageScreen> {
                     height: 35.0,
                   ),
                   _buildQuestion(
-                    ques: 'Select an ideal anxiety level',
+                    ques: 'Select an ideal ${_problem.noun} level',
                     min: 0,
                     max: _selectedLevel,
                     initialVal: 0,
@@ -120,8 +133,15 @@ class _TriageScreenState extends State<TriageScreen> {
               ),
             ),
             BottomButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, ChallengeScreen.routeName),
+              onPressed: () => Navigator.pushNamed(
+                context,
+                ChallengeScreen.routeName,
+                arguments: <String, dynamic>{
+                  'problem': _problem,
+                  'idealLevel': _idealLevel,
+                  'actualLevel': _selectedLevel,
+                },
+              ),
               title: 'NEXT',
             ),
           ],

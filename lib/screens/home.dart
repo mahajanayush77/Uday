@@ -1,10 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:uday/providers/tasks.dart';
+import '../models/problem.dart';
 import '../screens/triage.dart';
 import '/constants.dart';
 import '../widgets/emoji.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  var _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isInit) {
+      Provider.of<Tasks>(context, listen: false)
+          .fetchAndSetTasks()
+          .whenComplete(() {
+        _isInit = false;
+      });
+    }
+  }
+
+  final double width = 160.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,34 +70,36 @@ class HomePage extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 color: Colors.white,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    EmojiButton(
-                      'Anxious',
-                      '😰',
-                      () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TriageScreen())),
-                    ),
-                    EmojiButton(
-                      'Stressed',
-                      '😫',
-                      () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TriageScreen())),
-                    ),
-                    EmojiButton(
-                      'Depressed',
-                      '😞',
-                      () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TriageScreen())),
-                    ),
-                  ],
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      EmojiButton(
+                        title: 'Anxious',
+                        emoji: '😰',
+                        width: width,
+                        onPressed: () => Navigator.pushNamed(
+                            context, TriageScreen.routeName,
+                            arguments: Problem.Anxiety),
+                      ),
+                      EmojiButton(
+                        title: 'Stressed',
+                        emoji: '😫',
+                        width: width,
+                        onPressed: () => Navigator.pushNamed(
+                            context, TriageScreen.routeName,
+                            arguments: Problem.Stress),
+                      ),
+                      EmojiButton(
+                        title: 'Depressed',
+                        emoji: '😞',
+                        width: width,
+                        onPressed: () => Navigator.pushNamed(
+                            context, TriageScreen.routeName,
+                            arguments: Problem.Depression),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )

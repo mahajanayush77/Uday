@@ -4,38 +4,57 @@ class EmojiButton extends StatelessWidget {
   final void Function() onPressed;
   final String title;
   final String emoji;
-  EmojiButton(this.title, this.emoji, this.onPressed);
+  final double width;
+  final String subTitle;
+  EmojiButton({
+    required this.title,
+    required this.emoji,
+    required this.onPressed,
+    this.width = double.infinity,
+    this.subTitle = "",
+  });
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return OutlinedButton(
       onPressed: onPressed,
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
         shape: MaterialStateProperty.all<OutlinedBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
-              Radius.circular(30.0),
+              Radius.circular(10.0),
             ),
-          ),
-        ),
-        textStyle: MaterialStateProperty.all(
-          TextStyle(
-            fontSize: 20.0,
           ),
         ),
       ),
       child: Container(
-        width: 160.0,
+        height: 40.0,
+        width: width,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(emoji),
-            SizedBox(
-              width: 20.0,
+            Row(
+              children: [
+                Text(emoji,
+                    style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                SizedBox(
+                  width: 20.0,
+                ),
+                Text(title,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.black,
+                      letterSpacing: 1.2,
+                    )),
+              ],
             ),
-            Text(
-              title,
-            ),
+            Text(subTitle,
+                style: TextStyle(
+                  fontSize: 13.0,
+                  color: Colors.black,
+                  letterSpacing: 1.2,
+                )),
           ],
         ),
       ),
