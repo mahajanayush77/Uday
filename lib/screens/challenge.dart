@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uday/models/problem.dart';
 import 'package:uday/providers/tasks.dart';
 import '../constants.dart';
 import '../widgets/bottomButton.dart';
 import '../widgets/emoji.dart';
+import '../models/problem.dart';
+import '../models/task.dart';
 
 class ChallengeScreen extends StatefulWidget {
   static const routeName = '/challenge';
@@ -17,7 +18,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
   late ProblemDetails _problem;
   late int _actualLevel;
   late int _idealLevel;
-  Set<Tasks> _selectedTasks = {};
+  Set<Task> _selectedTasks = {};
 
   @override
   void didChangeDependencies() {
@@ -38,6 +39,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         .tasks
         .where((t) => t.type.contains(_problem.type))
         .toList();
+    int creditsUsed = _selectedTasks.fold(0, (sum, t) => sum + t.credits);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -101,7 +103,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                           style: kSubheadingStyle,
                         ),
                         Text(
-                          '${_actualLevel - _idealLevel} Credit(s) remaining',
+                          '${_actualLevel - _idealLevel - creditsUsed} Credit(s) remaining',
                           style: kBodyStyle,
                         ),
                       ],
@@ -116,11 +118,68 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         final task = tasks[index];
+                        final bool alreadySelected = _selectedTasks
+                                .where((t) => t.id == task.id)
+                                .length >
+                            0;
                         return EmojiButton(
-                            title: task.title,
-                            emoji: task.emoji,
-                            subTitle: '${task.credits} Anxiety Credit',
-                            onPressed: () {});
+                          title: task.title,
+                          emoji: task.emoji,
+                          subTitle: '${task.credits} Anxiety Credit',
+                          backgroundColor: alreadySelected
+                              ? Colors.green[200]
+                              : Colors.grey[200],
+                          onPressed: () {
+                            if (alreadySelected) {
+                              setState(() {
+                                _selectedTasks
+                                    .removeWhere((t) => t.id == task.id);
+                              });
+                            } else {
+                              int creditsSelected = 0;
+                              if (_selectedTasks.isNotEmpty) {
+                                creditsSelected = _selectedTasks.fold(
+                                    0, (sum, t) => sum + t.credits);
+                              }
+
+                              if ((creditsSelected + task.credits) <=
+                                  (_actualLevel - _idealLevel)) {
+                                setState(() {
+                                  _selectedTasks.add(task);
+                                });
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Oops!'),
+                                        content: Text(
+                                          'Your do not have enough ${_problem.noun} credits left!',
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(),
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      kAccentColor),
+                                              textStyle:
+                                                  MaterialStateProperty.all(
+                                                      kBodyStyle),
+                                              foregroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.white),
+                                            ),
+                                            child: Text('OK'),
+                                          )
+                                        ],
+                                      );
+                                    });
+                              }
+                            }
+                          },
+                        );
                       },
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(

@@ -1,5 +1,5 @@
-import 'package:uday/models/problem.dart';
-import 'package:uday/models/task.dart';
+import '../models/problem.dart';
+import '../models/task.dart';
 
 class TaskService {
   final tasks = [

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:uday/providers/tasks.dart';
+import '../providers/tasks.dart';
 import './screens/triage.dart';
 import './constants.dart';
 import './screens/home.dart';

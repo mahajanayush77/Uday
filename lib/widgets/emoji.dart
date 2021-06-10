@@ -6,12 +6,14 @@ class EmojiButton extends StatelessWidget {
   final String emoji;
   final double width;
   final String subTitle;
+  final Color? backgroundColor;
   EmojiButton({
     required this.title,
     required this.emoji,
     required this.onPressed,
     this.width = double.infinity,
     this.subTitle = "",
+    this.backgroundColor = const Color(0xFFEEEEEE),
   });
 
   @override
@@ -19,7 +21,7 @@ class EmojiButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+        backgroundColor: MaterialStateProperty.all(backgroundColor),
         shape: MaterialStateProperty.all<OutlinedBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
