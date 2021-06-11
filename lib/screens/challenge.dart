@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uday/providers/tasks.dart';
+import '../providers/tasks.dart';
+import '../screens/reward.dart';
 import '../constants.dart';
 import '../widgets/bottomButton.dart';
 import '../widgets/emoji.dart';
@@ -183,7 +184,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                       },
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(
-                        height: 1.0,
+                        height: 2.0,
                       ),
                     ),
                     SizedBox(
@@ -193,7 +194,18 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                 ),
               ),
             ),
-            BottomButton(onPressed: () {}, title: 'NEXT'),
+            BottomButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RewardScreen.routeName,
+                    arguments: <String, dynamic>{
+                      'problem': _problem,
+                      'selectedTasks': _selectedTasks,
+                    },
+                  );
+                },
+                title: 'NEXT'),
           ],
         ),
       ),

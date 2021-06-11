@@ -19,7 +19,7 @@ class BottomButton extends StatelessWidget {
         color: Colors.grey[200],
         height: 50.0,
         padding: EdgeInsets.symmetric(
-          horizontal: 9.0,
+          horizontal: 20.0,
           vertical: 5.0,
         ),
         child: ElevatedButton(

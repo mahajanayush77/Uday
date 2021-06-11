@@ -45,7 +45,7 @@ class EmojiButton extends StatelessWidget {
                 ),
                 Text(title,
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 16.0,
                       color: Colors.black,
                       letterSpacing: 1.2,
                     )),
@@ -53,7 +53,7 @@ class EmojiButton extends StatelessWidget {
             ),
             Text(subTitle,
                 style: TextStyle(
-                  fontSize: 13.0,
+                  fontSize: 12.0,
                   color: Colors.black,
                   letterSpacing: 1.2,
                 )),
