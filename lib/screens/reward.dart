@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:uday/providers/rewards.dart';
 import '../constants.dart';
 import '../widgets/bottomButton.dart';
 import '../widgets/emoji.dart';
@@ -8,6 +10,7 @@ class RewardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final rewards = Provider.of<Rewards>(context, listen: false).rewards;
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -46,14 +49,15 @@ class RewardScreen extends StatelessWidget {
                     height: 14.0,
                   ),
                   ListView.separated(
-                    itemCount: 5,
+                    itemCount: rewards.length,
                     scrollDirection: Axis.vertical,
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
+                      final reward = rewards[index];
                       return EmojiButton(
-                        title: 'Ice Cream',
-                        emoji: '🍦',
+                        title: reward.title,
+                        emoji: reward.emoji,
                         onPressed: () {},
                       );
                     },

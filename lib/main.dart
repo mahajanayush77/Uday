@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:uday/providers/rewards.dart';
 import 'package:uday/screens/reward.dart';
 import '../providers/tasks.dart';
 import './screens/triage.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Tasks()),
+        ChangeNotifierProvider(create: (_) => Rewards()),
       ],
       child: MaterialApp(
         title: 'Uday',

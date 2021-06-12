@@ -1,33 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-import '../providers/tasks.dart';
 import '../models/problem.dart';
 import '../screens/triage.dart';
 import '/constants.dart';
 import '../widgets/emoji.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   static const routeName = '/home';
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  var _isInit = true;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_isInit) {
-      Provider.of<Tasks>(context, listen: false)
-          .fetchAndSetTasks()
-          .whenComplete(() {
-        _isInit = false;
-      });
-    }
-  }
-
   final double width = 160.0;
 
   @override

@@ -7,6 +7,7 @@ import '../widgets/bottomButton.dart';
 import '../widgets/emoji.dart';
 import '../models/problem.dart';
 import '../models/task.dart';
+import '../widgets/customAlertDialog.dart';
 
 class ChallengeScreen extends StatefulWidget {
   static const routeName = '/challenge';
@@ -152,29 +153,11 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text('Oops!'),
-                                        content: Text(
-                                          'Your do not have enough ${_problem.noun} credits left!',
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      kAccentColor),
-                                              textStyle:
-                                                  MaterialStateProperty.all(
-                                                      kBodyStyle),
-                                              foregroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.white),
-                                            ),
-                                            child: Text('OK'),
-                                          )
-                                        ],
+                                      return CustomAlertDialog(
+                                        title: 'Oops!',
+                                        action: 'OK',
+                                        content:
+                                            'You do not have enough ${_problem.noun.toLowerCase()} credits left.',
                                       );
                                     });
                               }
@@ -196,14 +179,29 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
             ),
             BottomButton(
                 onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RewardScreen.routeName,
-                    arguments: <String, dynamic>{
-                      'problem': _problem,
-                      'selectedTasks': _selectedTasks,
-                    },
-                  );
+                  var notValid = _selectedTasks.isEmpty ||
+                      creditsUsed != _actualLevel - _idealLevel;
+                  if (notValid) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CustomAlertDialog(
+                            title: 'Oops!',
+                            action: 'OK',
+                            content:
+                                'It seems like you have not spent all your ${_problem.noun.toLowerCase()} credits!',
+                          );
+                        });
+                  } else {
+                    Navigator.pushNamed(
+                      context,
+                      RewardScreen.routeName,
+                      arguments: <String, dynamic>{
+                        'problem': _problem,
+                        'selectedTasks': _selectedTasks,
+                      },
+                    );
+                  }
                 },
                 title: 'NEXT'),
           ],
