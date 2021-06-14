@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:uday/providers/rewards.dart';
-import 'package:uday/screens/reward.dart';
+import '../screens/schedule.dart';
+import '../providers/rewards.dart';
+import '../screens/reward.dart';
 import '../providers/tasks.dart';
 import './screens/triage.dart';
 import './constants.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
           TriageScreen.routeName: (ctx) => TriageScreen(),
           ChallengeScreen.routeName: (ctx) => ChallengeScreen(),
           RewardScreen.routeName: (ctx) => RewardScreen(),
+          ScheduleScreen.routeName: (ctx) => ScheduleScreen(),
         },
       ),
     );
