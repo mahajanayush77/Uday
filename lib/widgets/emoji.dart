@@ -39,7 +39,7 @@ class EmojiButton extends StatelessWidget {
             Row(
               children: [
                 Text(emoji,
-                    style: TextStyle(fontSize: 16.0, color: Colors.black)),
+                    style: TextStyle(fontSize: 20.0, color: Colors.black)),
                 SizedBox(
                   width: 20.0,
                 ),
