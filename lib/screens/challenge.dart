@@ -199,6 +199,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                       arguments: <String, dynamic>{
                         'problem': _problem,
                         'selectedTasks': _selectedTasks,
+                        'idealLevel': _idealLevel,
+                        'initialLevel': _actualLevel,
                       },
                     );
                   }

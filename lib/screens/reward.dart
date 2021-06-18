@@ -22,6 +22,8 @@ class _RewardScreenState extends State<RewardScreen> {
   Reward? _selectedReward;
   late ProblemDetails _problem;
   late Set<Task> _selectedTasks;
+  late int _initialLevel;
+  late int _idealLevel;
 
   @override
   void didChangeDependencies() {
@@ -31,7 +33,8 @@ class _RewardScreenState extends State<RewardScreen> {
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       _problem = params['problem'] as ProblemDetails;
       _selectedTasks = params['selectedTasks'] as Set<Task>;
-
+      _initialLevel = params['initialLevel'] as int;
+      _idealLevel = params['idealLevel'] as int;
       _isInit = false;
     }
   }
@@ -110,7 +113,17 @@ class _RewardScreenState extends State<RewardScreen> {
               onPressed: () {
                 if (_selectedReward != null) {
                   print(_selectedReward!.title);
-                  Navigator.pushNamed(context, ScheduleScreen.routeName);
+                  Navigator.pushNamed(
+                    context,
+                    ScheduleScreen.routeName,
+                    arguments: <String, dynamic>{
+                      'problem': _problem,
+                      'idealLevel': _idealLevel,
+                      'initialLevel': _initialLevel,
+                      'tasks': _selectedTasks,
+                      'reward': _selectedReward,
+                    },
+                  );
                 } else {
                   showDialog(
                     context: context,
