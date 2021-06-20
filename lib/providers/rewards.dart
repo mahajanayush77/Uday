@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import '../models/reward.dart';
-import '../services/reward_service.dart';
 
 class Rewards with ChangeNotifier {
-  final _rewardService = RewardService();
+  final Database _database;
+
+  Rewards(this._database);
 
   List<Reward> _rewards = [];
 
@@ -13,7 +15,9 @@ class Rewards with ChangeNotifier {
 
   Future<void> fetchAndSetRewards() async {
     try {
-      _rewards = await _rewardService.getAllRewards();
+      final response = await _database.query('rewards');
+      _rewards = response.map((r) => Reward.fromMap(r)).toList();
+      notifyListeners();
     } catch (e) {
       throw e;
     }

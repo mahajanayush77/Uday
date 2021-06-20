@@ -1,17 +1,28 @@
-import '../models/problem.dart';
+import 'package:flutter/foundation.dart';
 
 class Task {
   final int id;
   final String title;
   final int credits;
   final String emoji;
-  final List<Problem> type;
 
   Task({
     required this.id,
     required this.title,
     required this.credits,
     required this.emoji,
-    required this.type,
   });
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'title': title,
+        'credits': credits,
+        'emoji': emoji,
+      };
+  factory Task.fromMap(Map<String, dynamic> m) => Task(
+        id: m['id'],
+        title: m['title'],
+        credits: m['credits'],
+        emoji: m['emoji'],
+      );
 }

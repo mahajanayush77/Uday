@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import '../models/task.dart';
-import '../services/task_service.dart';
 
 class Tasks with ChangeNotifier {
-  final _taskService = TaskService();
+  final Database _database;
+  Tasks(this._database);
   List<Task> _tasks = [];
 
   List<Task> get tasks {
@@ -12,7 +13,9 @@ class Tasks with ChangeNotifier {
 
   Future<void> fetchAndSetTasks() async {
     try {
-      _tasks = await _taskService.getAllTasks();
+      final response = await _database.query('tasks');
+      _tasks = response.map((t) => Task.fromMap(t)).toList();
+      notifyListeners();
     } catch (e) {
       throw e;
     }

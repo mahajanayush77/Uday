@@ -8,4 +8,16 @@ class Reward {
     required this.title,
     required this.emoji,
   });
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'title': title,
+        'emoji': emoji,
+      };
+
+  factory Reward.fromMap(Map<String, dynamic> m) => Reward(
+        id: m['id'],
+        title: m['title'],
+        emoji: m['emoji'],
+      );
 }

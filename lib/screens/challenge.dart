@@ -37,10 +37,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tasks = Provider.of<Tasks>(context, listen: false)
-        .tasks
-        .where((t) => t.type.contains(_problem.type))
-        .toList();
+    final tasks = Provider.of<Tasks>(context, listen: false).tasks;
     int creditsUsed = _selectedTasks.fold(0, (sum, t) => sum + t.credits);
     return SafeArea(
       child: Scaffold(
