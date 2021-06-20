@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:uday/constants.dart';
-import 'package:uday/widgets/bottomButton.dart';
-import 'package:uday/widgets/emoji.dart';
+import '../constants.dart';
+import '../widgets/bottomButton.dart';
+import '../widgets/emoji.dart';
 
 class CheckBack extends StatelessWidget {
   static const routeName = '/check-back';

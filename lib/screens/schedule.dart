@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:uday/models/problem.dart';
-import 'package:uday/models/reward.dart';
-import 'package:uday/models/task.dart';
-import 'package:uday/screens/checkBack.dart';
+import '../models/problem.dart';
+import '../models/reward.dart';
+import '../models/task.dart';
+import '../screens/checkBack.dart';
 import '../widgets/customAlertDialog.dart';
 import '../widgets/emoji.dart';
 import '../widgets/bottomButton.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import '../widgets/sliderQuestion.dart';
 import '../providers/rewards.dart';
 import '../providers/tasks.dart';
 import '../models/problem.dart';
 import '../widgets/bottomButton.dart';
-import '../widgets/CustomSlider.dart';
 import '../constants.dart';
 import '../screens/challenge.dart';
 import '../widgets/customAlertDialog.dart';
@@ -39,30 +39,6 @@ class _TriageScreenState extends State<TriageScreen> {
 
   int _selectedLevel = 1;
   int _idealLevel = 0;
-  Widget _buildQuestion({
-    required String ques,
-    required int min,
-    required int max,
-    required int initialVal,
-    required bool Function(int) onChanged,
-  }) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          ques,
-          style: kHeadingStyle,
-        ),
-        CustomSlider(
-          max: max,
-          min: min,
-          onChanged: onChanged,
-          initialVal: initialVal,
-        ),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +62,7 @@ class _TriageScreenState extends State<TriageScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _buildQuestion(
+                  SliderQuestion(
                     ques: 'How ${_problem.adjective} are you ?',
                     min: 1,
                     max: 10,
@@ -114,7 +90,7 @@ class _TriageScreenState extends State<TriageScreen> {
                   SizedBox(
                     height: 35.0,
                   ),
-                  _buildQuestion(
+                  SliderQuestion(
                     ques: 'Select an ideal ${_problem.noun} level',
                     min: 0,
                     max: _selectedLevel,
