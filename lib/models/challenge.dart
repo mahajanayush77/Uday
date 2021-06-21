@@ -1,5 +1,4 @@
-import 'package:uday/models/problem.dart';
-
+import '../models/problem.dart';
 import '../models/reward.dart';
 import '../models/task.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:uday/models/challenge.dart';
+import '../models/challenge.dart';
 
 class Challenges with ChangeNotifier {
   final Database _database;

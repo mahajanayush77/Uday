@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:uday/models/challenge.dart';
-import 'package:uday/providers/challenges.dart';
+import '../models/challenge.dart';
+import '../providers/challenges.dart';
 import '../models/problem.dart';
 import '../models/reward.dart';
 import '../models/task.dart';

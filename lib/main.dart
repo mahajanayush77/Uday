@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:uday/providers/challenges.dart';
+import '../providers/challenges.dart';
 import '../database/database.dart';
 import '../screens/checkBack.dart';
 import '../screens/schedule.dart';

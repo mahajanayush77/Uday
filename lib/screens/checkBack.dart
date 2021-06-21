@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:uday/models/challenge.dart';
+import '../models/challenge.dart';
 import '../constants.dart';
 import '../widgets/bottomButton.dart';
 import '../widgets/emoji.dart';
