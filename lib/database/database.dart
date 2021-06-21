@@ -65,6 +65,13 @@ Future<Database> connectToDB(String dbName) async {
           batch.insert('tasks', task.toMap());
         });
 
+        // create challenges table
+        batch.execute(
+            'CREATE TABLE IF NOT EXISTS challenges(id INTEGER PRIMARY KEY AUTOINCREMENT, initial_level INTEGER NOT NULL, ideal_level INTEGER NOT NULL, actual_level INTEGER, reward_id INTEGER NOT NULL, created_at INTEGER NOT NULL, remind_at INTEGER NOT NULL, condition TEXT NOT NULL, FOREIGN KEY(reward_id) REFERENCES rewards(id));');
+
+        // create challenges tasks table
+        batch.execute(
+            'CREATE TABLE IF NOT EXISTS challenges_tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, challenge_id INTEGER NOT NULL, task_id INTEGER NOT NULL);');
         await batch.commit();
       } catch (e) {
         throw (e);

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uday/providers/challenges.dart';
 import '../database/database.dart';
 import '../screens/checkBack.dart';
 import '../screens/schedule.dart';
@@ -52,31 +53,39 @@ class _MyAppState extends State<MyApp> {
             providers: [
               ChangeNotifierProvider(create: (_) => Tasks(_database)),
               ChangeNotifierProvider(create: (_) => Rewards(_database)),
+              ChangeNotifierProvider(create: (_) => Challenges(_database)),
             ],
-            child: MaterialApp(
-              title: 'Uday',
-              theme: ThemeData(
-                primaryColor: kPrimaryColor,
-                accentColor: kAccentColor,
-                textTheme: GoogleFonts.quicksandTextTheme(
-                  Theme.of(context).textTheme,
+            child: Consumer<Challenges>(builder: (context, challenges, _) {
+              return MaterialApp(
+                title: 'Uday',
+                theme: ThemeData(
+                  primaryColor: kPrimaryColor,
+                  accentColor: kAccentColor,
+                  textTheme: GoogleFonts.quicksandTextTheme(
+                    Theme.of(context).textTheme,
+                  ),
                 ),
-              ),
-              debugShowCheckedModeBanner: false,
-              home: SafeArea(
-                child: HomePage(),
-              ),
-              routes: {
-                HomePage.routeName: (ctx) => HomePage(),
-                TriageScreen.routeName: (ctx) => TriageScreen(),
-                ChallengeScreen.routeName: (ctx) => ChallengeScreen(),
-                RewardScreen.routeName: (ctx) => RewardScreen(),
-                ScheduleScreen.routeName: (ctx) => ScheduleScreen(),
-                CheckBack.routeName: (ctx) => CheckBack(),
-              },
-            ),
+                debugShowCheckedModeBanner: false,
+                home: SafeArea(
+                  child: challenges.latestChallenge == null
+                      ? HomePage()
+                      : CheckBack(
+                          challenge: challenges.latestChallenge,
+                        ),
+                ),
+                routes: {
+                  HomePage.routeName: (ctx) => HomePage(),
+                  TriageScreen.routeName: (ctx) => TriageScreen(),
+                  ChallengeScreen.routeName: (ctx) => ChallengeScreen(),
+                  RewardScreen.routeName: (ctx) => RewardScreen(),
+                  ScheduleScreen.routeName: (ctx) => ScheduleScreen(),
+                  // CheckBack.routeName: (ctx) => CheckBack(),
+                },
+              );
+            }),
           )
         : MaterialApp(
+            debugShowCheckedModeBanner: false,
             home: Container(
               color: kPrimaryColor,
               child: Container(),

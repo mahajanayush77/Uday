@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:uday/models/challenge.dart';
 import '../constants.dart';
 import '../widgets/bottomButton.dart';
 import '../widgets/emoji.dart';
 
 class CheckBack extends StatelessWidget {
   static const routeName = '/check-back';
+  final Challenge challenge;
+  CheckBack({
+    required this.challenge,
+  });
+
+  // Use only for non-empty strings.
+  String _capitaliseFirstChar(String value) {
+    return value[0].toUpperCase() + value.substring(1);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final creditsProblemWord = _capitaliseFirstChar(challenge.problem.noun);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -56,7 +68,7 @@ class CheckBack extends StatelessWidget {
                         height: 10.0,
                       ),
                       Text(
-                        'Spend 3 stress credits on',
+                        'Spend ${challenge.initialLevel - challenge.idealLevel} stress credits on',
                         style: kBodyStyle,
                       ),
                       Divider(
@@ -68,15 +80,16 @@ class CheckBack extends StatelessWidget {
                     height: 14.0,
                   ),
                   ListView.separated(
-                    itemCount: 4,
+                    itemCount: challenge.tasks.length,
                     scrollDirection: Axis.vertical,
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
+                      final task = challenge.tasks.toList()[index];
                       return EmojiButton(
-                        title: 'Meditate',
-                        emoji: '🏃',
-                        subTitle: '2 Anxiety Credit',
+                        title: task.title,
+                        emoji: task.emoji,
+                        subTitle: '${task.credits} $creditsProblemWord Credit',
                         onPressed: () {},
                       );
                     },

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:uday/models/challenge.dart';
+import 'package:uday/providers/challenges.dart';
 import '../models/problem.dart';
 import '../models/reward.dart';
 import '../models/task.dart';
-import '../screens/checkBack.dart';
 import '../widgets/customAlertDialog.dart';
 import '../widgets/emoji.dart';
 import '../widgets/bottomButton.dart';
@@ -168,10 +170,43 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     },
                   );
                 } else {
-                  Navigator.pushNamed(
-                    context,
-                    CheckBack.routeName,
+                  final dateTimeNow = DateTime.now();
+                  final reminderDateTime = DateTime(
+                    dateTimeNow.year,
+                    dateTimeNow.month,
+                    dateTimeNow.day,
+                    _scheduledTime.hour,
+                    _scheduledTime.minute,
                   );
+
+                  final newChallenge = Challenge(
+                    idealLevel: _idealLevel,
+                    initialLevel: _initialLevel,
+                    tasks: _selectedTasks,
+                    reward: _selectedReward,
+                    remindAt: reminderDateTime,
+                    problem: _problem,
+                  );
+
+                  Provider.of<Challenges>(context, listen: false)
+                      .create(newChallenge)
+                      .then((_) {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/',
+                      (route) => false,
+                    );
+                  }).catchError((err) {
+                    print(err);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CustomAlertDialog(
+                            title: 'Oops!',
+                            action: 'OK',
+                            content: 'An unexpected error occurred!',
+                          );
+                        });
+                  });
                 }
               },
               title: 'START CHALLENGE',
