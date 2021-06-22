@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../models/challenge.dart';
+import '../providers/challenges.dart';
+import '../screens/triage.dart';
+import '../screens/home.dart';
 import '../widgets/CustomSlider.dart';
 import '../widgets/bottomButton.dart';
 import '../widgets/customActionButton.dart';
+import '../widgets/customAlertDialog.dart';
 
 class ReviewScreen extends StatefulWidget {
   static const routeName = '/review';
@@ -67,74 +72,101 @@ class _ReviewScreenState extends State<ReviewScreen> {
             ),
             BottomButton(
               title: 'NEXT',
-              onPressed: () {
-                var dialogText = '';
-                var dialogActions = <Widget>[];
+              onPressed: () async {
+                try {
+                  await Provider.of<Challenges>(context, listen: false)
+                      .endChallenge(
+                    _challenge!.id,
+                    _actualLevel,
+                  ); // end challenge
 
-                final okayButton = CustomActionButton(
-                  action: 'OK',
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/',
-                      (route) => false,
-                    );
-                  },
-                );
+                  var dialogText = '';
+                  var dialogActions = <Widget>[];
 
-                final tryAgainButton = CustomActionButton(
-                  action: 'Try Again',
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                );
+                  final okayButton = CustomActionButton(
+                    action: 'OK',
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        HomePage.routeName,
+                        (route) => false,
+                      );
+                    },
+                  );
 
-                final takeABreakButton = CustomActionButton(
-                  action: 'Take a break',
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/',
-                      (route) => false,
-                    );
-                  },
-                );
+                  final tryAgainButton = CustomActionButton(
+                    action: 'Try Again',
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacementNamed(
+                        TriageScreen.routeName,
+                        arguments: <String, dynamic>{
+                          'problem': _challenge!.problem.type,
+                          'initialLevel': _actualLevel,
+                        },
+                      );
+                    },
+                  );
 
-                if (_actualLevel < 1) {
-                  dialogText =
-                      'Congratulations on getting your ${_challenge!.problem.noun} levels to zero! You rock 🤘';
-                  dialogActions.add(okayButton);
-                } else if (_actualLevel < _challenge!.idealLevel) {
-                  dialogText =
-                      'Well done! Your ${_challenge!.problem.noun} levels seem better than ideal.';
-                  dialogActions.addAll([tryAgainButton, takeABreakButton]);
-                } else if (_actualLevel == _challenge!.idealLevel) {
-                  dialogText =
-                      'Good job on completing all your tasks! You are getting better.';
-                  dialogActions.addAll([tryAgainButton, takeABreakButton]);
-                } else if (_actualLevel > _challenge!.idealLevel &&
-                    _actualLevel < _challenge!.initialLevel) {
-                  dialogText =
-                      'Don\'t give up! You have made great effort in completing your tasks.';
-                  dialogActions.addAll([tryAgainButton, takeABreakButton]);
-                } else if (_actualLevel < 7) {
-                  dialogText =
-                      'We take a few steps forward, some backwards. But most importantly we are progressing!';
-                  dialogActions.addAll([tryAgainButton, takeABreakButton]);
-                } else {
-                  dialogText =
-                      'Progress takes time, you\'re putting in effort and that\'s all that matters! Do talk to someone if your ${_challenge!.problem.noun} persists 💪';
-                  dialogActions.addAll([tryAgainButton, takeABreakButton]);
+                  final takeABreakButton = CustomActionButton(
+                    action: 'Take a break',
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        HomePage.routeName,
+                        (route) => false,
+                      );
+                    },
+                  );
+
+                  if (_actualLevel < 1) {
+                    dialogText =
+                        'Congratulations on getting your ${_challenge!.problem.noun} levels to zero! You rock 🤘';
+                    dialogActions.add(okayButton);
+                  } else if (_actualLevel < _challenge!.idealLevel) {
+                    dialogText =
+                        'Well done! Your ${_challenge!.problem.noun} levels seem better than ideal.';
+                    dialogActions.addAll([tryAgainButton, takeABreakButton]);
+                  } else if (_actualLevel == _challenge!.idealLevel) {
+                    dialogText =
+                        'Good job on completing all your tasks! You are getting better.';
+                    dialogActions.addAll([tryAgainButton, takeABreakButton]);
+                  } else if (_actualLevel > _challenge!.idealLevel &&
+                      _actualLevel < _challenge!.initialLevel) {
+                    dialogText =
+                        'Don\'t give up! You have made great effort in completing your tasks.';
+                    dialogActions.addAll([tryAgainButton, takeABreakButton]);
+                  } else if (_actualLevel < 7) {
+                    dialogText =
+                        'We take a few steps forward, some backwards. But most importantly we are progressing!';
+                    dialogActions.addAll([tryAgainButton, takeABreakButton]);
+                  } else {
+                    dialogText =
+                        'Progress takes time, you\'re putting in effort and that\'s all that matters! Do talk to someone if your ${_challenge!.problem.noun} persists 💪';
+                    dialogActions.addAll([tryAgainButton, takeABreakButton]);
+                  }
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Review'),
+                        content: Text(dialogText),
+                        actions: dialogActions,
+                      );
+                    },
+                  );
+                } catch (e) {
+                  print(e);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomAlertDialog(
+                        title: 'Oops!',
+                        action: 'OK',
+                        content: 'An unexpected error occurred.',
+                      );
+                    },
+                  );
                 }
-
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Review'),
-                      content: Text(dialogText),
-                      actions: dialogActions,
-                    );
-                  },
-                );
               },
             ),
           ],

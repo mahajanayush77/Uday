@@ -93,4 +93,19 @@ class Challenges with ChangeNotifier {
       throw e;
     }
   }
+
+  Future<void> endChallenge(int? challengeId, int updatedLevel) async {
+    try {
+      await _database.update(
+        'challenges',
+        {'actual_level': updatedLevel},
+        where: 'id=?',
+        whereArgs: [challengeId],
+      );
+      await fetchAndSetLatestChallenge();
+      notifyListeners();
+    } catch (e) {
+      throw (e);
+    }
+  }
 }

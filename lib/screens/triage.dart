@@ -20,12 +20,22 @@ class TriageScreen extends StatefulWidget {
 class _TriageScreenState extends State<TriageScreen> {
   var _isInit = true;
   late ProblemDetails _problem; // will be initialised later
+  int _selectedLevel = 1;
+  int _idealLevel = 0;
+  int _initialLevel = 1;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isInit) {
-      final problemType = ModalRoute.of(context)!.settings.arguments as Problem;
-      _problem = getProblemDetails(problemType);
+      final params =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      _problem = getProblemDetails(params['problem'] as Problem);
+
+      if (params.containsKey('initialLevel')) {
+        _initialLevel = params['initialLevel'] as int;
+      }
+
       Provider.of<Rewards>(context, listen: false)
           .fetchAndSetRewards()
           .whenComplete(() => _isInit = false);
@@ -36,9 +46,6 @@ class _TriageScreenState extends State<TriageScreen> {
       });
     }
   }
-
-  int _selectedLevel = 1;
-  int _idealLevel = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +73,7 @@ class _TriageScreenState extends State<TriageScreen> {
                     ques: 'How ${_problem.adjective} are you ?',
                     min: 1,
                     max: 10,
-                    initialVal: 1,
+                    initialVal: _initialLevel,
                     onChanged: (val) {
                       if (_idealLevel > val) {
                         showDialog(

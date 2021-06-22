@@ -59,24 +59,36 @@ class HomePage extends StatelessWidget {
                         emoji: '😰',
                         width: width,
                         onPressed: () => Navigator.pushNamed(
-                            context, TriageScreen.routeName,
-                            arguments: Problem.Anxiety),
+                          context,
+                          TriageScreen.routeName,
+                          arguments: <String, dynamic>{
+                            'problem': Problem.Anxiety,
+                          },
+                        ),
                       ),
                       EmojiButton(
                         title: 'Stressed',
                         emoji: '😫',
                         width: width,
                         onPressed: () => Navigator.pushNamed(
-                            context, TriageScreen.routeName,
-                            arguments: Problem.Stress),
+                          context,
+                          TriageScreen.routeName,
+                          arguments: <String, dynamic>{
+                            'problem': Problem.Stress,
+                          },
+                        ),
                       ),
                       EmojiButton(
                         title: 'Depressed',
                         emoji: '😞',
                         width: width,
                         onPressed: () => Navigator.pushNamed(
-                            context, TriageScreen.routeName,
-                            arguments: Problem.Depression),
+                          context,
+                          TriageScreen.routeName,
+                          arguments: <String, dynamic>{
+                            'problem': Problem.Depression,
+                          },
+                        ),
                       ),
                     ],
                   ),
