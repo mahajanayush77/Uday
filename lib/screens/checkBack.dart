@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../screens/review.dart';
+import '../widgets/customActionButton.dart';
 import '../models/challenge.dart';
 import '../constants.dart';
 import '../widgets/bottomButton.dart';
@@ -7,7 +9,7 @@ import '../widgets/emoji.dart';
 
 class CheckBack extends StatelessWidget {
   static const routeName = '/check-back';
-  final Challenge challenge;
+  final Challenge? challenge;
   CheckBack({
     required this.challenge,
   });
@@ -19,7 +21,7 @@ class CheckBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final creditsProblemWord = _capitaliseFirstChar(challenge.problem.noun);
+    final creditsProblemWord = _capitaliseFirstChar(challenge!.problem.noun);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -68,7 +70,7 @@ class CheckBack extends StatelessWidget {
                         height: 10.0,
                       ),
                       Text(
-                        'Spend ${challenge.initialLevel - challenge.idealLevel} stress credits on',
+                        'Spend ${challenge!.initialLevel - challenge!.idealLevel} stress credits on',
                         style: kBodyStyle,
                       ),
                       Divider(
@@ -80,12 +82,12 @@ class CheckBack extends StatelessWidget {
                     height: 14.0,
                   ),
                   ListView.separated(
-                    itemCount: challenge.tasks.length,
+                    itemCount: challenge!.tasks.length,
                     scrollDirection: Axis.vertical,
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      final task = challenge.tasks.toList()[index];
+                      final task = challenge!.tasks.toList()[index];
                       return EmojiButton(
                         title: task.title,
                         emoji: task.emoji,
@@ -103,7 +105,31 @@ class CheckBack extends StatelessWidget {
               ),
             ),
             BottomButton(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Great Job ${challenge!.reward.emoji}'),
+                      content: Text(
+                          'Reward yourself with ${challenge!.reward.title} for the hard work you have put in!'),
+                      actions: [
+                        CustomActionButton(
+                          action: 'OK',
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.pushNamed(
+                              context,
+                              ReviewScreen.routeName,
+                              arguments: challenge,
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
               title: 'I\'m Done!',
             ),
           ],

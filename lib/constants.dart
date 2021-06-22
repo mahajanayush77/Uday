@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 const kPrimaryColor = MaterialColor(0xff9575cd, <int, Color>{});
 const kAccentColor = Color(0xff5c6bc0);
 
-const DB_NAME = 'test';
+const DB_NAME = 'test1';
 
 const kSubheadingStyle = TextStyle(
   fontWeight: FontWeight.bold,

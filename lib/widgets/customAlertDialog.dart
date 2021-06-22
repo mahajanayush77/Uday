@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
+import './customActionButton.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   final String title;
@@ -19,15 +19,12 @@ class CustomAlertDialog extends StatelessWidget {
         content,
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(kAccentColor),
-            textStyle: MaterialStateProperty.all(kBodyStyle),
-            foregroundColor: MaterialStateProperty.all(Colors.white),
-          ),
-          child: Text(action),
-        )
+        CustomActionButton(
+          action: action,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ],
     );
   }

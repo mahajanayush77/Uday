@@ -4,13 +4,13 @@ import '../models/challenge.dart';
 
 class Challenges with ChangeNotifier {
   final Database _database;
-  late Challenge _latestChallengeToday;
+  Challenge? _latestChallengeToday;
 
   Challenges(this._database) {
     fetchAndSetLatestChallenge();
   }
 
-  Challenge get latestChallenge {
+  Challenge? get latestChallenge {
     return _latestChallengeToday;
   }
 
@@ -79,7 +79,7 @@ class Challenges with ChangeNotifier {
         );
 
         challenge.tasks.forEach((t) {
-          batch.insert('challenges_activities', {
+          batch.insert('challenges_tasks', {
             'challenge_id': newChallengeId,
             'task_id': t.id,
           });

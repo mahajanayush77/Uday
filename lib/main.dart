@@ -3,17 +3,21 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
-import '../providers/challenges.dart';
-import '../database/database.dart';
+
+import '../screens/review.dart';
 import '../screens/checkBack.dart';
 import '../screens/schedule.dart';
-import '../providers/rewards.dart';
 import '../screens/reward.dart';
-import '../providers/tasks.dart';
-import './screens/triage.dart';
-import './constants.dart';
 import './screens/home.dart';
+import './screens/triage.dart';
 import './screens/challenge.dart';
+
+import '../providers/challenges.dart';
+import '../providers/rewards.dart';
+import '../providers/tasks.dart';
+
+import './constants.dart';
+import '../database/database.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -79,7 +83,7 @@ class _MyAppState extends State<MyApp> {
                   ChallengeScreen.routeName: (ctx) => ChallengeScreen(),
                   RewardScreen.routeName: (ctx) => RewardScreen(),
                   ScheduleScreen.routeName: (ctx) => ScheduleScreen(),
-                  // CheckBack.routeName: (ctx) => CheckBack(),
+                  ReviewScreen.routeName: (ctx) => ReviewScreen(),
                 },
               );
             }),

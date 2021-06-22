@@ -1,7 +1,7 @@
 import '../models/problem.dart';
 
 ProblemDetails getProblemDetailsByNoun(String noun) {
-  switch (noun) {
+  switch (noun.toLowerCase()) {
     case 'anxiety':
       return getProblemDetails(Problem.Anxiety);
     case 'stress':
