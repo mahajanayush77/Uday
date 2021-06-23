@@ -115,15 +115,31 @@ class _TriageScreenState extends State<TriageScreen> {
               ),
             ),
             BottomButton(
-              onPressed: () => Navigator.pushNamed(
-                context,
-                ChallengeScreen.routeName,
-                arguments: <String, dynamic>{
-                  'problem': _problem,
-                  'idealLevel': _idealLevel,
-                  'actualLevel': _selectedLevel,
-                },
-              ),
+              onPressed: () {
+                if (_idealLevel >= _selectedLevel) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomAlertDialog(
+                        title: 'Oops!',
+                        action: 'OK',
+                        content:
+                            'Please pick an ideal ${_problem.noun.toLowerCase()} level that is realistically lower than your actual ${_problem.noun.toLowerCase()} level.',
+                      );
+                    },
+                  );
+                } else {
+                  Navigator.pushNamed(
+                    context,
+                    ChallengeScreen.routeName,
+                    arguments: <String, dynamic>{
+                      'problem': _problem,
+                      'idealLevel': _idealLevel,
+                      'actualLevel': _selectedLevel,
+                    },
+                  );
+                }
+              },
               title: 'NEXT',
             ),
           ],

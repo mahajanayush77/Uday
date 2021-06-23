@@ -1,8 +1,8 @@
 import 'package:sqflite/sqflite.dart';
-import '../models/reward.dart';
-import '../models/task.dart';
 import 'dart:async';
 import 'package:path/path.dart';
+import '../models/reward.dart';
+import '../models/task.dart';
 
 final _defaultRewards = [
   Reward(
@@ -20,26 +20,77 @@ final _defaultRewards = [
     title: 'Personal Praise',
     emoji: '🙌',
   ),
+  Reward(
+    id: 4,
+    title: 'Mobile Game',
+    emoji: '🎮',
+  ),
+  Reward(
+    id: 5,
+    title: 'Watch your Favorite Show',
+    emoji: '📺',
+  ),
+  Reward(
+    id: 6,
+    title: 'Volunteer',
+    emoji: '🙋',
+  ),
 ];
 
 final _defaultTasks = [
   Task(
     id: 1,
+    title: 'Meditate',
+    credits: 1,
+    emoji: '🧘',
+  ),
+  Task(
+    id: 2,
+    title: 'Watch a TED Talk',
+    credits: 1,
+    emoji: '📺',
+  ),
+  Task(
+    id: 3,
     title: 'Jog',
     credits: 2,
     emoji: '🏃',
   ),
   Task(
-    id: 2,
-    title: 'Meditate',
+    id: 4,
+    title: 'Read a book',
     credits: 2,
-    emoji: '🧘',
+    emoji: '📚',
   ),
   Task(
-    id: 3,
-    title: 'Talk to a friend',
+    id: 5,
+    title: 'Stroll',
+    credits: 2,
+    emoji: '🚶🏻‍♀️',
+  ),
+  Task(
+    id: 6,
+    title: 'Write about your problems',
     credits: 3,
+    emoji: '📝️',
+  ),
+  Task(
+    id: 7,
+    title: 'Bake',
+    credits: 3,
+    emoji: '🎂',
+  ),
+  Task(
+    id: 8,
+    title: 'Talk to a friend',
+    credits: 4,
     emoji: '🗣️',
+  ),
+  Task(
+    id: 9,
+    title: 'Help someone in need',
+    credits: 4,
+    emoji: '💪',
   ),
 ];
 
