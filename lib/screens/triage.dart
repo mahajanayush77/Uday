@@ -33,7 +33,9 @@ class _TriageScreenState extends State<TriageScreen> {
       _problem = getProblemDetails(params['problem'] as Problem);
 
       if (params.containsKey('initialLevel')) {
-        _initialLevel = params['initialLevel'] as int;
+        setState(() {
+          _initialLevel = params['initialLevel'] as int;
+        });
       }
 
       Provider.of<Rewards>(context, listen: false)

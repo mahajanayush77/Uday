@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 import '../screens/review.dart';
 import '../screens/checkBack.dart';
@@ -19,9 +22,35 @@ import '../providers/tasks.dart';
 import './constants.dart';
 import '../database/database.dart';
 
-void main() {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(MyApp());
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+NotificationAppLaunchDetails? notificationAppLaunchDetails;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    // portrait orientation
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+    // setup local notifications
+    notificationAppLaunchDetails = (await flutterLocalNotificationsPlugin
+        .getNotificationAppLaunchDetails());
+
+    final initialisationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher_round');
+
+    await flutterLocalNotificationsPlugin.initialize(
+      InitializationSettings(
+        android: initialisationSettingsAndroid,
+      ),
+    );
+
+    runApp(MyApp());
+  } catch (e) {
+    print(e);
+    throw e;
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -82,7 +111,8 @@ class _MyAppState extends State<MyApp> {
                   TriageScreen.routeName: (ctx) => TriageScreen(),
                   ChallengeScreen.routeName: (ctx) => ChallengeScreen(),
                   RewardScreen.routeName: (ctx) => RewardScreen(),
-                  ScheduleScreen.routeName: (ctx) => ScheduleScreen(),
+                  ScheduleScreen.routeName: (ctx) =>
+                      ScheduleScreen(scheduleNotification),
                   ReviewScreen.routeName: (ctx) => ReviewScreen(),
                 },
               );
@@ -96,4 +126,36 @@ class _MyAppState extends State<MyApp> {
             ),
           );
   }
+}
+
+Future initializeTimeZone() async {
+  tz.initializeTimeZones();
+}
+
+Future<void> scheduleNotification(
+    DateTime scheduledTime, String title, String description) async {
+  final androidChannelSpecifics = AndroidNotificationDetails(
+    'uday_id',
+    'uday',
+    'Remind people to check in after completing tasks.',
+  );
+
+  final platformSpecifics =
+      NotificationDetails(android: androidChannelSpecifics);
+  await initializeTimeZone();
+  var time = tz.TZDateTime.from(
+    scheduledTime,
+    tz.local,
+  );
+
+  await flutterLocalNotificationsPlugin.zonedSchedule(
+    0,
+    title,
+    description,
+    time,
+    platformSpecifics,
+    uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+    androidAllowWhileIdle: true,
+  );
 }
