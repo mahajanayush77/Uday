@@ -70,7 +70,7 @@ final _defaultTasks = [
   ),
   Task(
     id: 6,
-    title: 'Write about your problems',
+    title: 'Journal your thoughts',
     credits: 3,
     emoji: '📝️',
   ),
